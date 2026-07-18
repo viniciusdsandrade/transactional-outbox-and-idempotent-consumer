@@ -14,7 +14,13 @@ allprojects {
     repositories { mavenCentral() }
 }
 
-subprojects {
+configure(
+    listOf(
+        project(":services:orders-service"),
+        project(":services:payments-service"),
+        project(":services:billing-service"),
+    ),
+) {
     apply(plugin = "java")
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
