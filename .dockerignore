@@ -1,0 +1,12 @@
+.git
+.gradle
+**/build
+.idea
+.vscode
+.superpowers
+docs
+infra
+README.md
+LICENSE
+docker-compose.yml
+Makefile
