@@ -740,8 +740,6 @@ services:
       KAFKA_SHARE_COORDINATOR_STATE_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_SHARE_COORDINATOR_STATE_TOPIC_MIN_ISR: 1
       KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
-    volumes:
-      - kafka_data:/tmp/kraft-combined-logs
     healthcheck:
       test: ["CMD-SHELL", "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list >/dev/null 2>&1"]
       interval: 5s
@@ -820,7 +818,6 @@ services:
 
 volumes:
   postgres_data:
-  kafka_data:
 ```
 
 - [ ] **Step 4: Criar a interface Make**
