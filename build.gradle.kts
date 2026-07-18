@@ -49,7 +49,10 @@ configure(
         "testRuntimeOnly"("org.junit.platform:junit-platform-launcher")
     }
 
-    tasks.withType<Test>().configureEach { useJUnitPlatform() }
+    tasks.withType<Test>().configureEach {
+        useJUnitPlatform()
+        jvmArgs("-Xshare:off")
+    }
     tasks.withType<BootJar>().configureEach {
         archiveFileName.set("${project.name}.jar")
     }
