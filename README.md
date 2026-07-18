@@ -1,5 +1,55 @@
 # Transactional Outbox and Idempotent Consumer Lab
 
+## Estado atual: bootstrap da Fase 1
+
+O repositório está preparado para desenvolvimento local, mas a implementação do
+fluxo de negócio ainda não começou. O bootstrap atual entrega:
+
+- um monorepo Gradle com Java 21 e três aplicações Spring Boot vazias;
+- um banco lógico PostgreSQL para cada serviço, com baseline Flyway `V1`;
+- um broker Kafka local em modo KRaft;
+- health checks dos três serviços e uma composição Docker executável;
+- testes mínimos que confirmam o carregamento da aplicação e a migração inicial.
+
+Ainda não existem endpoints de negócio, tabelas de domínio, eventos, publishers,
+consumidores, idempotência, retries ou DLQ. Esses itens pertencem às fases seguintes
+do laboratório e não fazem parte deste bootstrap.
+
+### Pré-requisitos
+
+- Java 21;
+- Docker Engine com Docker Compose;
+- GNU Make (opcional; os mesmos comandos podem ser executados diretamente).
+
+O wrapper `./gradlew` fixa a versão do Gradle usada pelo projeto. As credenciais
+`lab`/`lab` e as portas abaixo são destinadas somente ao ambiente local.
+
+### Comandos do bootstrap
+
+```bash
+make test                # testes unitários e de contexto
+make build               # gera os três bootJar
+make config              # valida o docker-compose.yml
+make up                  # constrói e inicia PostgreSQL, Kafka e os serviços
+make smoke               # consulta o Actuator dos três serviços
+make logs                # acompanha os logs da composição
+make down                # encerra a composição e preserva dados locais
+make reset               # encerra e remove volumes locais
+```
+
+Se houver mais de um contexto Docker configurado, o contexto pode ser escolhido
+por execução, por exemplo `DOCKER_CONTEXT=default make up`.
+
+### Portas locais
+
+| Componente | Porta | Uso |
+| --- | ---: | --- |
+| orders-service | 8081 | Actuator e futura API de pedidos |
+| payments-service | 8082 | Actuator e futura API de pagamentos |
+| billing-service | 8083 | Actuator e futura API de cobrança |
+| Kafka | 9092 | Listener para o host |
+| PostgreSQL | 5432 | Bancos `orders_db`, `payments_db` e `billing_db` |
+
 ## Enunciado
 
 Construa uma PoC backend que demonstre, de forma prática e testável, como processar um fluxo distribuído de negócio sem depender de transações distribuídas, usando os padrões **Transactional Outbox** e **Idempotent Consumer**.
